@@ -4,7 +4,6 @@
 # Nama          : Salsabila Zahirah / Ira Salsabila             =
 # Email         : irasalsabila@gmail.com                        =
 # Id Dicoding   : dicoding.com/users/irasalsabila/              =
-# Created       : 30 September 2023                             =
 # ===============================================================
 
 # Import Library
@@ -69,16 +68,6 @@ if st.sidebar.checkbox("Show Summary Statistics"):
     st.subheader("Summary Statistics")
     st.write(data.describe())
 
-# Show dataset source
-# st.sidebar.markdown("[Download Dataset](https://link-to-your-dataset)")
-
-# st.sidebar.markdown('**Weather:**')
-# st.sidebar.markdown('1: Clear, Few clouds, Partly cloudy, Partly cloudy')
-# st.sidebar.markdown('2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist')
-# st.sidebar.markdown('3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds')
-# st.sidebar.markdown('4: Heavy Rain + Ice Pallets + Thunderstorm + Mist, Snow + Fog')
-
-
 # ==============================
 # VISUALIZATION
 # ==============================
@@ -107,9 +96,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     # Season-wise bike share count
-    # st.subheader("Season-wise Bike Share Count")
 
-    # Mapping dari angka ke label musim
     season_mapping = {1: "spring", 2: "summer", 3: "fall", 4: "winter"}
     data["season_label"] = data["season"].map(season_mapping)
 
@@ -133,10 +120,10 @@ with col1:
 
 with col2:
     # Weather situation-wise bike share count
-    # st.subheader("Weather Situation-wise Bike Share Count")
 
     weather_mapping = {1: "Cloudy", 2: "Foggy", 3: "Snowy", 4: "Rainy"}
     data['weather_description'] = data['weathersit'].map(weather_mapping)
+
     weather_count = data.groupby("weather_description")["cnt"].sum().reset_index()
     max_cnt = weather_count["cnt"].max()
     min_cnt = weather_count["cnt"].min()
