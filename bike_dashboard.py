@@ -83,6 +83,25 @@ if st.sidebar.checkbox("Show Summary Statistics"):
 # VISUALIZATION
 # ==============================
 
+# Custom function to assign colors
+def get_color(val, max_val, min_val, color_scale):
+    # Normalize the value
+    norm_val = (val - min_val) / (max_val - min_val)
+    # Calculate the index in the color scale
+    color_idx = int(norm_val * (len(color_scale) - 1))
+    return color_scale[color_idx]
+
+# Define a blue color scale in hex
+blue_color_scale = [
+    "#EFF3FF",  # lightest blue
+    "#C6DBEF",
+    "#9ECAE1",
+    "#6BAED6",
+    "#4292C6",
+    "#2171B5",
+    "#08519C"   # darkest blue
+]
+
 # create a layout with two columns
 col1, col2 = st.columns(2)
 
@@ -95,8 +114,18 @@ with col1:
     data["season_label"] = data["season"].map(season_mapping)
 
     season_count = data.groupby("season_label")["cnt"].sum().reset_index()
+    max_cnt = season_count["cnt"].max()
+    min_cnt = season_count["cnt"].min()
+
+    season_count["color"] = season_count["cnt"].apply(get_color, 
+                                                      args=(max_cnt, min_cnt, blue_color_scale))
+
+
     fig_season_count = px.bar(season_count, x="season_label",
                               y="cnt", title="Season-wise Bike Share Count")
+    
+    fig_season_count.update_traces(marker_color=season_count["color"])
+
     fig_season_count.update_xaxes(title="Season")
     fig_season_count.update_yaxes(title="Rental bikes")
     st.plotly_chart(fig_season_count, use_container_width=True,
@@ -109,8 +138,17 @@ with col2:
     weather_mapping = {1: "Cloudy", 2: "Foggy", 3: "Snowy", 4: "Rainy"}
     data['weather_description'] = data['weathersit'].map(weather_mapping)
     weather_count = data.groupby("weather_description")["cnt"].sum().reset_index()
+    max_cnt = weather_count["cnt"].max()
+    min_cnt = weather_count["cnt"].min()
+
+    weather_count["color"] = weather_count["cnt"].apply(get_color, 
+                                                        args=(max_cnt, min_cnt, blue_color_scale))
+
     fig_weather_count = px.bar(weather_count, x="weather_description",
                             y="cnt", title="Weather Situation-wise Bike Share Count")
+    
+    fig_weather_count.update_traces(marker_color=weather_count["color"])
+
     fig_weather_count.update_xaxes(title="Weather Situation")
     fig_weather_count.update_yaxes(title="Rental bikes")
     st.plotly_chart(fig_weather_count, use_container_width=True, height=400, width=800)
