@@ -97,7 +97,7 @@ col1, col2 = st.columns(2)
 with col1:
     # Season-wise bike share count
 
-    season_mapping = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
+    season_mapping = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"} 
     data["season_label"] = data["season"].map(season_mapping)
 
     season_count = data.groupby("season_label")["cnt"].sum().reset_index()
