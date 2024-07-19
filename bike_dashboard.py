@@ -141,6 +141,36 @@ with col2:
     st.plotly_chart(fig_weather_count, use_container_width=True, height=400, width=800)
 
 
+# Define colors for each season
+season_colors = {
+    "spring": "#636EFA",
+    "summer": "#EF553B",
+    "fall": "#00CC96",
+    "winter": "#AB63FA",
+}
+
+# Streamlit app
+st.title("User Data by Season")
+# User selection for type of users
+user_types = ["casual", "registered"]
+selected_users = st.multiselect("Select user types to display", user_types, default=user_types)
+
+# Filter data based on selected user types
+filtered_data = data[['season_label', 'casual', 'registered']]
+filtered_data = filtered_data.melt(id_vars='season_label', value_vars=selected_users, var_name='user_type', value_name='count')
+
+# Create scatter plot
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=filtered_data, x='season_label', y='count', hue='season_label', palette=season_colors, ax=ax, style='user_type')
+
+# Add titles and labels
+ax.set_title("Number of Users by Season")
+ax.set_xlabel("Season")
+ax.set_ylabel("Number of Users")
+ax.legend(title='Season')
+
+# Show plot in Streamlit
+st.pyplot(fig)
 
 humidity_vs_cnt = data.groupby(["weekday", "hum", "temp", "windspeed"])["cnt"].sum().reset_index()
 
