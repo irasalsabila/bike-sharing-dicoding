@@ -150,7 +150,7 @@ season_colors = {
 }
 
 # Streamlit app
-st.title("User Data by Season")
+# st.title("User Data by Season")
 # User selection for type of users
 user_types = ["casual", "registered"]
 selected_users = st.multiselect("Select user types to display", user_types, default=user_types)
