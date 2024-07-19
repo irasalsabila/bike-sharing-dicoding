@@ -151,17 +151,15 @@ users_colors = {
 
 # User selection for type of users
 user_types = ["casual", "registered"]
-selected_users = st.multiselect("Select user types to display", user_types, default=user_types)
+selected_users = st.multiselect("Select User", user_types, default=user_types)
 
 # User selection for season
 seasons = list(season_mapping.values())
-selected_season = st.selectbox("Select season", seasons)
-
-selected_data = data[data["weekday"].isin(selected_users)]
+selected_season = st.selectbox("Select Season", seasons)
 
 # Filter data based on selected user types
-filtered_data = data[['season_label', 'casual', 'registered']]
-filtered_data = filtered_data.melt(id_vars='season_label', value_vars=selected_users, var_name='user_type', value_name='count')
+filtered_data = data[['season_label', 'casual', 'registered', 'temp']]
+filtered_data = filtered_data.melt(id_vars=['season_label', 'temp'], value_vars=selected_users, var_name='user_type', value_name='count')
 
 # Filter data based on selected season
 selected_data = filtered_data[filtered_data['season_label'] == selected_season]
@@ -169,13 +167,15 @@ selected_data = filtered_data[filtered_data['season_label'] == selected_season]
 # Create scatter plot using Plotly Express
 fig = px.scatter(
     selected_data,
-    x='user_type',
+    x='temp',
     y='count',
     color='user_type',
-    title=f"Number of Users in {selected_season.capitalize()} for {', '.join(selected_users)}",
-    color_discrete_map={color_code: user_choose for color_code, user_choose in users_colors.items()}
+    title=f"User Count vs. Temperature in {selected_season.capitalize()} for {', '.join(selected_users)}",
+    color_discrete_map=users_colors
 )
-fig.update_traces(showlegend=True)
+
+fig.update_traces(marker=dict(size=10, line=dict(width=2, color='DarkSlateGrey')), selector=dict(mode='markers+text'))
+fig.update_layout(legend_title='Users')
 
 st.plotly_chart(fig, use_container_width=True)
 
