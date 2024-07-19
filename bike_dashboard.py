@@ -97,7 +97,7 @@ col1, col2 = st.columns(2)
 with col1:
     # Season-wise bike share count
 
-    season_mapping = {1: "spring", 2: "summer", 3: "fall", 4: "winter"}
+    season_mapping = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
     data["season_label"] = data["season"].map(season_mapping)
 
     season_count = data.groupby("season_label")["cnt"].sum().reset_index()
@@ -143,14 +143,14 @@ with col2:
 
 # Define colors for each season
 users_colors = {
-    "casual": "#636EFA",
-    "registered": "#EF553B"
+    "Casual": "#636EFA",
+    "Registered": "#EF553B"
 }
 
 # Streamlit app
 
 # User selection for type of users
-user_types = ["casual", "registered"]
+user_types = ["Casual", "Registered"]
 selected_users = st.multiselect("Select User", user_types, default=user_types)
 
 # User selection for season
