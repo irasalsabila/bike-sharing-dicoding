@@ -176,11 +176,6 @@ fig = px.scatter(
     color_discrete_map={user_types[0]: '#636EFA', user_types[1]: '#EF553B'}
 )
 
-# Show plot in Streamlit
-# Update the legend labels to show weekday names instead of RGB codes
-for i, day_name in enumerate(selected_season):
-    fig.data[i].name = day_name
-
 st.plotly_chart(fig, use_container_width=True)
 
 humidity_vs_cnt = data.groupby(["weekday", "hum", "temp", "windspeed"])["cnt"].sum().reset_index()
