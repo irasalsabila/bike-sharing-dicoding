@@ -155,19 +155,26 @@ season_colors = {
 user_types = ["casual", "registered"]
 selected_users = st.multiselect("Select user types to display", user_types, default=user_types)
 
+# User selection for season
+seasons = list(season_mapping.values())
+selected_season = st.selectbox("Select season", seasons)
+
 # Filter data based on selected user types
 filtered_data = data[['season_label', 'casual', 'registered']]
 filtered_data = filtered_data.melt(id_vars='season_label', value_vars=selected_users, var_name='user_type', value_name='count')
 
+# Filter data based on selected season
+filtered_data = filtered_data[filtered_data['season_label'] == selected_season]
+
 # Create scatter plot
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatterplot(data=filtered_data, x='season_label', y='count', hue='season_label', palette=season_colors, ax=ax, style='user_type')
+sns.scatterplot(data=filtered_data, x='user_type', y='count', hue='user_type', palette="viridis", ax=ax)
 
 # Add titles and labels
-ax.set_title("Number of Users by Season")
-ax.set_xlabel("Season")
+ax.set_title(f"Number of Users in {selected_season.capitalize()}")
+ax.set_xlabel("User Type")
 ax.set_ylabel("Number of Users")
-ax.legend(title='Season')
+ax.legend(title='User Type')
 
 # Show plot in Streamlit
 st.pyplot(fig)
