@@ -150,7 +150,7 @@ users_colors = {
 # Streamlit app
 
 # User selection for type of users
-user_types = ["Casual", "Registered"]
+user_types = ["casual", "registered"]
 selected_users = st.multiselect("Select User", user_types, default=user_types)
 
 # User selection for season
