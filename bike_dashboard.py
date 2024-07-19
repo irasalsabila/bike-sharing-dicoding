@@ -142,15 +142,13 @@ with col2:
 
 
 # Define colors for each season
-season_colors = {
-    "spring": "#636EFA",
-    "summer": "#EF553B",
-    "fall": "#00CC96",
-    "winter": "#AB63FA",
+users_colors = {
+    "casual": "#636EFA",
+    "registered": "#EF553B"
 }
 
 # Streamlit app
-# st.title("User Data by Season")
+
 # User selection for type of users
 user_types = ["casual", "registered"]
 selected_users = st.multiselect("Select user types to display", user_types, default=user_types)
@@ -158,6 +156,8 @@ selected_users = st.multiselect("Select user types to display", user_types, defa
 # User selection for season
 seasons = list(season_mapping.values())
 selected_season = st.selectbox("Select season", seasons)
+
+selected_data = data[data["weekday"].isin(selected_users)]
 
 # Filter data based on selected user types
 filtered_data = data[['season_label', 'casual', 'registered']]
@@ -172,11 +172,15 @@ fig = px.scatter(
     x='user_type',
     y='count',
     color='user_type',
-    title=f"Number of Users in {selected_season.capitalize()}",
-    color_discrete_map={user_types[0]: '#636EFA', user_types[1]: '#EF553B'}
+    title=f"Number of Users in {selected_season.capitalize()} for {', '.join(selected_users)}",
+    color_discrete_map={color_code: user_choose for color_code, user_choose in users_colors.items()}
 )
+fig.update_traces(showlegend=True)
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+
 
 humidity_vs_cnt = data.groupby(["weekday", "hum", "temp", "windspeed"])["cnt"].sum().reset_index()
 
