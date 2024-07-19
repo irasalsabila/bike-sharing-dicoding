@@ -168,7 +168,7 @@ filtered_data = filtered_data[filtered_data['season_label'] == selected_season]
 
 # Create scatter plot
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatterplot(data=filtered_data, x='user_type', y='count', hue='user_type', palette="viridis", ax=ax)
+sns.scatter(data=filtered_data, x='user_type', y='count', hue='user_type', palette="viridis", ax=ax)
 
 # Add titles and labels
 ax.set_title(f"Number of Users in {selected_season.capitalize()}")
