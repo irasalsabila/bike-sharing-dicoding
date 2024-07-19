@@ -158,7 +158,7 @@ seasons = list(season_mapping.values())
 selected_season = st.selectbox("Select Season", seasons)
 
 # Filter data based on selected user types
-filtered_data = data[['season_label', 'casual', 'registered', 'temp']]
+filtered_data = data[['season_label', 'Casual', 'Registered', 'temp']]
 filtered_data = filtered_data.melt(id_vars=['season_label', 'temp'], value_vars=selected_users, var_name='user_type', value_name='count')
 
 # Filter data based on selected season
