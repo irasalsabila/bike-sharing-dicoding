@@ -164,20 +164,24 @@ filtered_data = data[['season_label', 'casual', 'registered']]
 filtered_data = filtered_data.melt(id_vars='season_label', value_vars=selected_users, var_name='user_type', value_name='count')
 
 # Filter data based on selected season
-filtered_data = filtered_data[filtered_data['season_label'] == selected_season]
+selected_data = filtered_data[filtered_data['season_label'] == selected_season]
 
-# Create scatter plot
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatter(data=filtered_data, x='user_type', y='count', hue='user_type', palette="viridis", ax=ax)
-
-# Add titles and labels
-ax.set_title(f"Number of Users in {selected_season.capitalize()}")
-ax.set_xlabel("User Type")
-ax.set_ylabel("Number of Users")
-ax.legend(title='User Type')
+# Create scatter plot using Plotly Express
+fig = px.scatter(
+    selected_data,
+    x='user_type',
+    y='count',
+    color='user_type',
+    title=f"Number of Users in {selected_season.capitalize()}",
+    color_discrete_map={user_types[0]: '#636EFA', user_types[1]: '#EF553B'}
+)
 
 # Show plot in Streamlit
-st.pyplot(fig)
+# Update the legend labels to show weekday names instead of RGB codes
+for i, day_name in enumerate(selected_season):
+    fig.data[i].name = day_name
+
+st.plotly_chart(fig, use_container_width=True)
 
 humidity_vs_cnt = data.groupby(["weekday", "hum", "temp", "windspeed"])["cnt"].sum().reset_index()
 
