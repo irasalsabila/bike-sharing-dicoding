@@ -157,6 +157,9 @@ selected_users = st.multiselect("Select User", user_types, default=user_types)
 seasons = list(season_mapping.values())
 selected_season = st.selectbox("Select Season", seasons)
 
+# Capitalize the selected user types for the title
+capitalized_selected_users = [user.capitalize() for user in selected_users]
+
 # Filter data based on selected user types
 filtered_data = data[['season_label', 'casual', 'registered', 'temp']]
 filtered_data = filtered_data.melt(id_vars=['season_label', 'temp'], value_vars=selected_users, var_name='user_type', value_name='count')
@@ -170,9 +173,10 @@ fig = px.scatter(
     x='temp',
     y='count',
     color='user_type',
-    title=f"User Count vs. Temperature in {selected_season.capitalize()} for {', '.join(selected_users)}",
+    title=f"User Count vs. Temperature in {selected_season.capitalize()} for {', '.join(capitalized_selected_users)}",
     color_discrete_map=users_colors
 )
+
 
 fig.update_traces(marker=dict(size=10, line=dict(width=2, color='DarkSlateGrey')), selector=dict(mode='markers+text'))
 fig.update_layout(legend_title='Users')
